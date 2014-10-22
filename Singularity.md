@@ -16,6 +16,7 @@ Accepting the assumption that the Singularity is a certaintly, and the belief th
 
 ##Singularity as the Second Coming
 * heaven on Earth?
-* early Singularists will have "miraculous" powers
+* early Singularists will have "miraculous" powers; anti-Christ?
+* all the nations will "come together"
 * uploading = ascention?
 
