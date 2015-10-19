@@ -236,21 +236,18 @@ class DisclosureTests(unittest.TestCase):
         logging.info('%s: %.2f %s' % (self.id()[9:],
                 time.time() - self.startTime, status))
 
+    def waitAndClick(self, elem):
+        WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.LINK_TEXT, elem)))
+        self.driver.find_element_by_link_text(elem).click()
+
     def test_Search(self):
         br = self.driver
         br.get('http://www.ginniemae.gov')
         assert br.title == 'Ginnie Mae'
-        #actions = ActionChains(br)
-        #elem = WebDriverWait(br,60).until(EC.presence_of_element_located((By.LINK_TEXT, "Doing Business with Ginnie Mae")))
-        time.sleep(1)
-        br.find_element_by_link_text('Doing Business with Ginnie Mae').click()
-        #ActionChains(br).click(elem).perform()
-        #ActionChains(br).move_to_element(elem).perform()
-        #input('this')
-        br.find_element_by_link_text('Investor Resources').click()
-        #actions.perform()
-        br.find_element_by_link_text('Ginnie Mae MBS Disclosure Data').click()
-        br.find_element_by_link_text('MBS Disclosure Data Search').click()
+        DisclosureTests.waitAndClick(self, 'Doing Business with Ginnie Mae')
+        DisclosureTests.waitAndClick(self, 'Investor Resources')
+        DisclosureTests.waitAndClick(self, 'Ginnie Mae MBS Disclosure Data')
+        DisclosureTests.waitAndClick(self, 'MBS Disclosure Data Search')
         br.find_element_by_id('searchInput').send_keys('138613')
         br.find_element_by_name('buttonSubmit').click()
         assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
@@ -259,24 +256,17 @@ class DisclosureTests(unittest.TestCase):
         br = self.driver
         br.get('http://www.ginniemae.gov')
         assert br.title == 'Ginnie Mae'
-        #actions = ActionChains(br)
-        #elem = WebDriverWait(br,60).until(EC.presence_of_element_located((By.LINK_TEXT, "Doing Business with Ginnie Mae")))
-        time.sleep(1)
-        br.find_element_by_link_text('Doing Business with Ginnie Mae').click()
-        #ActionChains(br).click(elem).perform()
-        #ActionChains(br).move_to_element(elem).perform()
-        #input('this')
-        br.find_element_by_link_text('Investor Resources').click()
-        #actions.perform()
-        br.find_element_by_link_text('Ginnie Mae MBS Disclosure Data').click()
-        br.find_element_by_link_text('Disclosure Data Download').click()
+        DisclosureTests.waitAndClick(self, 'Doing Business with Ginnie Mae')
+        DisclosureTests.waitAndClick(self, 'Investor Resources')
+        DisclosureTests.waitAndClick(self, 'Ginnie Mae MBS Disclosure Data')
+        DisclosureTests.waitAndClick(self, 'Disclosure Data Download')
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_tbEmailAddress').send_keys('cwolske@deloitte.com')
         br.find_element_by_name('ctl00$m$g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a$ctl00$btnQueryEmail').click()
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_tbAnswer').send_keys('Breck')
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_btnAnswerSecret').click()
-        br.find_element_by_link_text('daily.txt').click()
+        DisclosureTests.waitAndClick(self, 'daily.txt')
         #assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
-        time.sleep(3)
+        time.sleep(2)
 
 if __name__ == "__main__":
     unittest.main()
