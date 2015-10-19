@@ -13,11 +13,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 
-#sys.path.append("c:\\local\\bin")
-
-#caps = DesiredCapabilities.INTERNETEXPLORER
-#caps['ignoreProtectedModeSettings'] = True
-
 def suite():
     tests = ['test_loadLoginPage', 'test_RFS', 'test_SF']
     return unittest.TestSuite(map(PrdTest, tests))
@@ -266,12 +261,4 @@ class DisclosureTests(unittest.TestCase):
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_btnAnswerSecret').click()
         DisclosureTests.waitAndClick(self, 'daily.txt')
         #assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
-        time.sleep(2)
-
-if __name__ == "__main__":
-    unittest.main()
-#    runner = unittest.TextTestRunner()
-#    runner.run(MySuite())
-
-
-#SWF_MyXCelsius
+        time.sleep(3)
