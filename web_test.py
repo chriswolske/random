@@ -214,8 +214,8 @@ class DisclosureTests(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         #self.driver = webdriver.Ie('c:\\local\\bin\\IEDriverServer.exe')
-        self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
-        #self.driver = webdriver.Firefox()
+        #self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
+        self.driver = webdriver.Firefox()
         self.driver.get('http://duckduckgo.com')
 
     def setUp(self):
