@@ -1,3 +1,4 @@
+import os
 import unittest
 import sys
 import time
@@ -12,6 +13,12 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
+
+fp = webdriver.FirefoxProfile()
+fp.set_preference("browser.download.folderList",2)
+fp.set_preference("browser.download.manager.showWhenStarting",False)
+fp.set_preference("browser.download.dir", os.getcwd())
+fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")
 
 def suite():
     tests = ['test_loadLoginPage', 'test_RFS', 'test_SF']
@@ -209,8 +216,8 @@ class DisclosureTests(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         #self.driver = webdriver.Ie('c:\\local\\bin\\IEDriverServer.exe')
-        self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
-        #self.driver = webdriver.Firefox()
+        #self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
+        self.driver = webdriver.Firefox(firefox_profile=fp)
         self.driver.get('http://duckduckgo.com')
 
     def setUp(self):
@@ -278,8 +285,15 @@ class DisclosureTests(unittest.TestCase):
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_tbAnswer').send_keys('Breck')
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_btnAnswerSecret').click()
         DisclosureTests.waitAndClick(self, 'daily.txt')
+<<<<<<< HEAD
         DisclosureTests.waitAndClick(self, 'Home')
         assert br.find_element_by_xpath("//td[contains(.,'Who we are. What we do.')]")
 
 if __name__ == '__main__':
+=======
+        #assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
+        time.sleep(3)
+
+if __name__ == "__main__":
+>>>>>>> c05cb6d3cd6622233284c387ba07c99b18693b60
     unittest.main()
