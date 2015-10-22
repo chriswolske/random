@@ -1,3 +1,4 @@
+import os
 import unittest
 import sys
 import time
@@ -12,6 +13,12 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
+
+fp = webdriver.FirefoxProfile()
+fp.set_preference("browser.download.folderList",2)
+fp.set_preference("browser.download.manager.showWhenStarting",False)
+fp.set_preference("browser.download.dir", os.getcwd())
+fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")
 
 def suite():
     tests = ['test_loadLoginPage', 'test_RFS', 'test_SF']
@@ -210,7 +217,7 @@ class DisclosureTests(unittest.TestCase):
     def setUpClass(self):
         #self.driver = webdriver.Ie('c:\\local\\bin\\IEDriverServer.exe')
         #self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.Firefox(firefox_profile=fp)
         self.driver.get('http://duckduckgo.com')
 
     def setUp(self):
@@ -262,3 +269,6 @@ class DisclosureTests(unittest.TestCase):
         DisclosureTests.waitAndClick(self, 'daily.txt')
         #assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
         time.sleep(3)
+
+if __name__ == "__main__":
+    unittest.main()
