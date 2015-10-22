@@ -24,8 +24,8 @@ class NoLogin(unittest.TestCase):
         chrome_options = Options()
         chrome_options.add_argument("--start-maximized")
         #chrome_options.add_argument("--disable-native-events")
-        self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe',chrome_options=chrome_options)
-        #self.driver = webdriver.Firefox()
+        #self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe',chrome_options=chrome_options)
+        self.driver = webdriver.Firefox()
         #self.driver.implicitly_wait(10)
 
     @classmethod
@@ -209,8 +209,8 @@ class DisclosureTests(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         #self.driver = webdriver.Ie('c:\\local\\bin\\IEDriverServer.exe')
-        #self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.Chrome('c:\\local\\bin\\chromedriver.exe')
+        #self.driver = webdriver.Firefox()
         self.driver.get('http://duckduckgo.com')
 
     def setUp(self):
@@ -232,25 +232,43 @@ class DisclosureTests(unittest.TestCase):
                 time.time() - self.startTime, status))
 
     def waitAndClick(self, elem):
-        WebDriverWait(self.driver,60).until(EC.presence_of_element_located((By.LINK_TEXT, elem)))
+        WebDriverWait(self.driver,5).until(EC.presence_of_element_located((By.LINK_TEXT, elem)))
         self.driver.find_element_by_link_text(elem).click()
 
-    def test_Search(self):
+    def test_simple(self):
+        br = self.driver
+        br.get('http://www.ginniemae.gov')
+        #DisclosureTests.waitAndClick(self, 'Doing Business with Ginnie Mae')
+	#br.find_element_by_link_text('Doing Business with Ginnie Mae').click()
+	#ActionChains(br).move_to_element(elem).perform()
+	elem = br.find_element_by_link_text('Doing Business with Ginnie Mae')
+        print(elem.text)
+        elem.click()
+	ActionChains(br).move_to_element(elem).perform()
+        ActionChains(br).move_to_element(elem).perform()
+        DisclosureTests.waitAndClick(self, 'Investor Resources')
+	time.sleep(3)
+
+    def xtest_Search(self):
         br = self.driver
         br.get('http://www.ginniemae.gov')
         assert br.title == 'Ginnie Mae'
-        DisclosureTests.waitAndClick(self, 'Doing Business with Ginnie Mae')
-        DisclosureTests.waitAndClick(self, 'Investor Resources')
+        #DisclosureTests.waitAndClick(self, 'Doing Business with Ginnie Mae')
+        br.find_element_by_link_text('Doing Business with Ginnie Mae').click()
+	DisclosureTests.waitAndClick(self, 'Investor Resources')
         DisclosureTests.waitAndClick(self, 'Ginnie Mae MBS Disclosure Data')
         DisclosureTests.waitAndClick(self, 'MBS Disclosure Data Search')
         br.find_element_by_id('searchInput').send_keys('138613')
         br.find_element_by_name('buttonSubmit').click()
         assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
+        DisclosureTests.waitAndClick(self, 'Home')
+        assert br.find_element_by_xpath("//td[contains(.,'Who we are. What we do.')]")
 
-    def test_BulkDownload(self):
+    def xtest_BulkDownload(self):
         br = self.driver
         br.get('http://www.ginniemae.gov')
         assert br.title == 'Ginnie Mae'
+        DisclosureTests.waitAndClick(self, 'Home')
         DisclosureTests.waitAndClick(self, 'Doing Business with Ginnie Mae')
         DisclosureTests.waitAndClick(self, 'Investor Resources')
         DisclosureTests.waitAndClick(self, 'Ginnie Mae MBS Disclosure Data')
@@ -260,5 +278,8 @@ class DisclosureTests(unittest.TestCase):
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_tbAnswer').send_keys('Breck')
         br.find_element_by_id('ctl00_m_g_0617d90c_80f4_4a8c_9b51_989a75ad0a8a_ctl00_btnAnswerSecret').click()
         DisclosureTests.waitAndClick(self, 'daily.txt')
-        #assert br.find_element_by_xpath("//td[contains(.,'Wells Fargo')]")
-        time.sleep(3)
+        DisclosureTests.waitAndClick(self, 'Home')
+        assert br.find_element_by_xpath("//td[contains(.,'Who we are. What we do.')]")
+
+if __name__ == '__main__':
+    unittest.main()
