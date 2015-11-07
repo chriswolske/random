@@ -1,9 +1,10 @@
 from flask import Flask
 import requests
 import logging
+import datetime
 
 app = Flask(__name__)
-logging.basicConfig(filename='web_svr.log', level=logging.WARNING, format='%(asctime)s %(message)s')
+logging.basicConfig(filename='/home/chrisw/random/web_svr.log', level=logging.WARNING, format='%(asctime)s %(message)s')
 
 @app.route('/')
 def hello_world():
@@ -15,11 +16,15 @@ def check(site):
     try:
         r = requests.get(site,timeout=5.0)
     except requests.exceptions.ConnectionError:
-        logging.warning('%s %s ConnectError' % (site, r.status_code))
+        logging.warning('%s %s ConnectionError' % (site, r.status_code))
         return ('<strong>%s</strong>: Connection Error' % (site, r.status_code))
     except requests.exceptions.ConnectTimeout:
         logging.warning('%s %s ConnectTimeout' % (site,r.status_code))
         return ('<strong>%s</strong>: Connection Timeout' % site)
+    except requests.exceptions.ReadTimeout:
+        logging.warning('%s %s ReadTimeout' % (site,r.status_code))
+        return ('<strong>%s</strong>: Read Timeout' % site)
+
 
     if r.status_code == 200:
         logging.warning('%s %s OK %s' % (site, r.status_code, r.elapsed))
@@ -45,6 +50,7 @@ def checkgnma():
     output=''
     for s in sites:
         output = output +check(s)+ '<p>'
+    output = output + "Report genereted: " + str(datetime.datetime.now())
     return output
 
 if __name__ == '__main__':
